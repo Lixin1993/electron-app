@@ -1,14 +1,34 @@
 import React from 'react'
-import { Layout, Menu, Breadcrumb, Avatar } from 'antd'
-import {  UserOutlined } from '@ant-design/icons'
+import { Layout, Menu } from 'antd'
 import config from '../../route/siderBarConfig'
+import { Switch, Route, Link } from 'react-router-dom'
+import Avatar from '../../components/avatar'
+
 import './index.css'
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
 const siderBar = () => {
-    return config.map(item => <Menu.Item key={item.title} icon={item.icon}>{item.name}</Menu.Item>)
+    return config.map((item) => {
+        if (item.children) {
+            return (
+                <SubMenu key={item.title} icon={item.icon} title={item.name}>
+                    {item.children.map(child =><Menu.Item key={child.tilte}><Link to={child.path}>{child.name}</Link></Menu.Item>)}
+                </SubMenu>
+            )
+        }
+        return <Menu.Item key={item.title} icon={item.icon}><Link to={item.path}>{item.name}</Link></Menu.Item>
+    })
+}
+
+const routerComp = () => {
+  return config.map(item => {
+        if (item.children) {
+            return item.children.map(child => <Route key={child.title} path={child.path} component={child.component} />)
+        }
+        return <Route key={item.title} path={item.path} component={item.component} />
+      })
 }
 
 class SiderDemo extends React.Component {
@@ -19,21 +39,19 @@ class SiderDemo extends React.Component {
           <div className="logo">
               成外生物组卷系统
           </div>
-          <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+          <Menu theme="dark" defaultSelectedKeys={['competition']} mode="inline">
             {siderBar()}
           </Menu>
         </Sider>
         <Layout className="site-layout">
-          <Header className="site-layout-background" style={{ padding: '0 16px', textAlign: 'right' }}>
-            <Avatar size={32} icon={<UserOutlined />} />
-            </Header>
-          <Content style={{ margin: '0 16px' }}>
-            <Breadcrumb style={{ margin: '16px 0' }}>
-              <Breadcrumb.Item>User</Breadcrumb.Item>
-              <Breadcrumb.Item>Bill</Breadcrumb.Item>
-            </Breadcrumb>
+          <Header style={{ padding: '0 16px', background: '#f0f2f5', textAlign: 'right' }}>
+            <Avatar />
+          </Header>
+          <Content>
             <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
-              Bill is a cat.
+                <Switch>
+                    {routerComp()}
+                </Switch>
             </div>
           </Content>
           <Footer style={{ textAlign: 'center' }}>@成都外国语学校生物组</Footer>

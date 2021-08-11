@@ -26,14 +26,14 @@ function createWindow () {
     // mainWindow.loadURL(path.join('file://', __dirname, '/build/index.html'));
     //接收渲染进程的信息
     const ipc = require('electron').ipcMain;
-    ipc.on("loginSuccess",function () {
-        mainWindow.maximize();
-        
+
+    ipc.on("login",function () {
+        mainWindow.setFullScreen(true);
     });
 
-    mainWindow.on('closed', () => {
-        mainWindow = null
-    })
+    ipc.on("logout",function () {
+        mainWindow.setFullScreen(false);
+    });
 }
 makeSingleInstance();
 //app主进程的事件和方法

@@ -20,6 +20,11 @@
     font-weight: bold;
     background: rgba(255, 255, 255, 0.3);
   }
+
+  .wrapper .ant-layout-content {
+    margin: 0 16px;
+    background-color: #fff;
+  }
   
   .site-layout .site-layout-background {
     background: #fff;

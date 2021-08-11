@@ -3,20 +3,20 @@ import {
   Switch,
   Route,
 } from "react-router-dom"
-import Login from './pages/login'
-import Index from './pages/index'
+import Login from './pages/Login'
+import Index from './pages/Index'
+import { ConfigProvider } from 'antd'
+import zhCN from 'antd/es/locale/zh_CN'
 
 export default function App() {
   return (
-    <Router>
+    <ConfigProvider locale={zhCN}>
+      <Router>
         <Switch>
-            <Route exact path="/">
-              <Index />
-            </Route>
-            <Route path="/login">
-              <Login />
-            </Route>
+          <Route path="/login" component={Login} />
+          <Route path="/" component={Index} />
         </Switch>
-    </Router>
+      </Router>
+    </ConfigProvider>
   );
 }
