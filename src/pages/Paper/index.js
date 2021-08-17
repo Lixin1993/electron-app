@@ -3,6 +3,8 @@ import Form from './Form'
 import { Divider, Table, Button } from 'antd'
 import dayjs from 'dayjs'
 import './index.css'
+import { deleteSingleQuestions } from '../../model'
+
 const data = [
   {
     key: '1',
@@ -44,14 +46,18 @@ const tableTitle = [
       return(
         <>
           <Button className='btn-action'>预览</Button>
-          <Button className='btn-action' danger>删除</Button>
+          <Button className='btn-action' onClick={() => deleteSingleQuestions({
+            message: 'delete image',
+            path: 'img/u=1088987845,4135509379&fm=26&fmt=auto&gp=0.webp',
+            sha: 'd3d7fbb7b66e13d61706fbee49d1d41cb3577984',
+          })} danger>删除</Button>
         </>
       )
     }
   }
 ];
 
-const Competition = () => {
+const Paper = () => {
   return (
     <div className='paper'>
       <Form />
@@ -60,4 +66,4 @@ const Competition = () => {
     </div>
   )
 }
-export default Competition
+export default Paper

@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Layout, Menu } from 'antd'
 import config from '../../route/siderBarConfig'
 import { Switch, Route, Link } from 'react-router-dom'
 import Avatar from '../../components/avatar'
+import { fetchSingleQuestions } from '../../model'
+import axios from 'axios'
 
 import './index.css'
 
@@ -31,34 +33,38 @@ const routerComp = () => {
       })
 }
 
-class SiderDemo extends React.Component {
-  render() {
-    return (
-      <Layout className='wrapper' style={{ minHeight: '100vh' }}>
-        <Sider>
-          <div className="logo">
-              成外生物组卷系统
+const SiderDemo = () => {
+
+  useEffect(() => {
+    fetchSingleQuestions()
+    
+  })
+  
+  return (
+    <Layout className='wrapper' style={{ minHeight: '100vh' }}>
+      <Sider>
+        <div className="logo">
+            成外生物组卷系统
+        </div>
+        <Menu theme="dark" defaultSelectedKeys={['paper']} mode="inline">
+          {siderBar()}
+        </Menu>
+      </Sider>
+      <Layout className="site-layout">
+        <Header style={{ padding: '0 16px', background: '#f0f2f5', textAlign: 'right' }}>
+          <Avatar />
+        </Header>
+        <Content>
+          <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
+              <Switch>
+                  {routerComp()}
+              </Switch>
           </div>
-          <Menu theme="dark" defaultSelectedKeys={['competition']} mode="inline">
-            {siderBar()}
-          </Menu>
-        </Sider>
-        <Layout className="site-layout">
-          <Header style={{ padding: '0 16px', background: '#f0f2f5', textAlign: 'right' }}>
-            <Avatar />
-          </Header>
-          <Content>
-            <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
-                <Switch>
-                    {routerComp()}
-                </Switch>
-            </div>
-          </Content>
-          <Footer style={{ textAlign: 'center' }}>@成都外国语学校生物组</Footer>
-        </Layout>
+        </Content>
+        <Footer style={{ textAlign: 'center' }}>@成都外国语学校生物组</Footer>
       </Layout>
-    );
-  }
+    </Layout>
+  );
 }
 
 export default SiderDemo
