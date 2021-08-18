@@ -1,64 +1,72 @@
-import React, { Fragment } from 'react'
+import React, { useState, useEffect } from 'react'
 import Form from './Form'
 import UploadImage from './UploadImage'
-import { Divider, Table, Button } from 'antd'
-import dayjs from 'dayjs'
-import './index.css'
-const data = [
-  {
-    key: '1',
-    name: '高一年级 下期',
-    type: '竞赛',
-    time: '2021-05-20 15:20',
-  },
-  {
-    key: '2',
-    name: '高二年级 上期',
-    type: '常规',
-    time: '2021-05-20 15:21',
-  },
-];
+import { Divider, Table, Button, Image, Spin } from 'antd'
+import { fetchSingleQuestions } from '../../model'
 
-const tableTitle = [
-  {
-    title: '试卷名称',
-    dataIndex: 'name',
-    key: 'name',
-  },
-  {
-    title: '试卷类型',
-    dataIndex: 'type',
-    key: 'type',
-  },
-  {
-    title: '生成时间',
-    dataIndex: 'time',
-    key: 'time',
-    sorter: {
-      compare: (a, b) => dayjs(a.time) - dayjs(b.time),
-    },
-  },
-  {
-    title: '操作',
-    key: 'action',
-    render: (tags) => {
-      return(
-        <>
-          <Button className='btn-action'>预览</Button>
-          <Button className='btn-action' danger>删除</Button>
-        </>
-      )
-    }
-  }
-];
+import './index.css'
+
+const urlHost = 'https://cdn.jsdelivr.net/gh/LiXin1993/PicGo/'
 
 const Warehouse = () => {
+  const [type, setType] = useState('convention')
+  const [level, setLevel] = useState('easy')
+  const [isScan, setIsScan] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [dataSource, setDataSource] = useState([])
+
+  const tableTitle = [
+    {
+      title: '试题名称',
+      dataIndex: 'name',
+      key: 'name',
+    },
+    {
+      title: '操作',
+      key: 'action',
+      render: (tags) => {
+        return(
+          <>
+            <Button className='btn-action' onClick={() => setIsScan(true)}>预览</Button>
+            <Button className='btn-action' danger>删除</Button>
+            {isScan && <Image.PreviewGroup preview={{ visible: isScan, onVisibleChange: show => setIsScan(show) }}>
+              <Image src={`${urlHost}/${tags.path}`} alt='' style={{ display: 'none' }} />
+            </Image.PreviewGroup>}
+          </>
+        )
+      }
+    }
+  ];
+
+  const fetchData = async (path) => {
+    setLoading(true)
+    const list = await fetchSingleQuestions(path) || []
+    const data = list.map(item => {
+        item.key = item.sha
+        return item
+    })
+    setDataSource(data)
+    setLoading(false)
+  }
+
+  useEffect(() => {
+    const path = `${type}/${level}`
+    fetchData(path)
+  }, [type, level])
+
   return (
     <div className='paper'>
       <UploadImage />
-      <Form />
+      <Form
+        selectedType={type}
+        selectedLevel={level}
+        changeType={setType}
+        changeLevel={setLevel}
+      />
       <Divider />
-      <Table dataSource={data} columns={tableTitle} />;
+      <Spin spinning={loading}>
+        <Table dataSource={dataSource} columns={tableTitle} />
+      </Spin>
     </div>
   )
 }

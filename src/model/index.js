@@ -12,9 +12,9 @@ export function initAxios() {
     })
 }
 
-export async function fetchSingleQuestions() {
+export async function fetchSingleQuestions(path) {
     try {
-        const res = await axios.get('https://api.github.com/repos/LiXin1993/PicGo/contents/img')
+        const res = await axios.get(`https://api.github.com/repos/LiXin1993/PicGo/contents/img/${path}`)
         return res.data || {}
     } catch {
         return {}

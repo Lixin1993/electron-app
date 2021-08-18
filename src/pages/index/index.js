@@ -1,10 +1,8 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Layout, Menu } from 'antd'
 import config from '../../route/siderBarConfig'
 import { Switch, Route, Link } from 'react-router-dom'
 import Avatar from '../../components/avatar'
-import { fetchSingleQuestions } from '../../model'
-import axios from 'axios'
 
 import './index.css'
 
@@ -34,11 +32,6 @@ const routerComp = () => {
 }
 
 const SiderDemo = () => {
-
-  useEffect(() => {
-    fetchSingleQuestions()
-    
-  })
   
   return (
     <Layout className='wrapper' style={{ minHeight: '100vh' }}>
