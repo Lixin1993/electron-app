@@ -29,7 +29,7 @@ const Form = (props) => {
                     <Radio.Button value="competition">竞赛</Radio.Button>
                 </Radio.Group>
             </Col>
-            <Col push={2} span={4}>
+            <Col push={2} span={8}>
                 <Radio.Group value={level} onChange={onChangeLevel}>
                     <Radio.Button value="easy">简单</Radio.Button>
                     <Radio.Button value="normal">正常</Radio.Button>

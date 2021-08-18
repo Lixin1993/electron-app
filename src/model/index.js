@@ -23,7 +23,18 @@ export async function fetchSingleQuestions(path) {
 
 export async function deleteSingleQuestions(payload) {
     try {
-        const res = await axios.delete(`https://api.github.com/repos/LiXin1993/PicGo/contents/${payload.path}`, { params: { ...payload } })
+        const params = { message: 'delete image', sha: payload.sha, author: { name: 'LiXin1993', email: '461620786@qq.com' } }
+        const res = await axios.delete(`https://api.github.com/repos/LiXin1993/PicGo/contents/img/${payload.path}`, { data: { ...params } })
+        return res.data || {}
+    } catch {
+        return {}
+    }
+}
+
+export async function uploadSingleQuestions(payload) {
+    try {
+        const params = { message: 'upload image', content: payload.content }
+        const res = await axios.put(`https://api.github.com/repos/LiXin1993/PicGo/contents/img/${payload.path}`, { ...params })
         return res.data || {}
     } catch {
         return {}
